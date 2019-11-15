@@ -46,7 +46,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordChangedAt: req.body.passwordChangedAt
   });
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
+  //console.log(url);
   await new Email(newUser, url).sendWelcome();
   createSendToken(newUser, 201, res);
 });
@@ -188,7 +188,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
-    console.log(err);
+    //console.log(err);
     return next(
       new AppError(
         'There was an error sending the email. Try again later!',
@@ -225,7 +225,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
-  console.log(req.user.id);
   const user = await User.findById(req.user.id).select('+password');
   // 2) Check if posted password is correct
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
